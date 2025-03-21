@@ -1,14 +1,19 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import tkinter
 from tkinter import ttk
 modifyno = 2
-
+ip = False
 window = tkinter.Tk()
 window.title("Falcon's Validator")
 window.minsize(width=450,height=450)
 window.config(padx=50, pady=50)
+
+def setip():
+    ip=True
+    print(ip)
 def update_credentials():
     global uname
     global pass1
@@ -16,21 +21,34 @@ def update_credentials():
     pass1 = password.get()
     print(uname,pass1)
 def fill_values():
-    iframe = driver.find_element(By.ID, "Result Validation_iframe")
+    driver.switch_to.default_content()
+    iframe = driver.find_element(By.XPATH, "/html/body/form/div[2]/div[5]/div[2]/div[2]/div/iframe")
     driver.switch_to.frame(iframe)
     wbcno = 7
-    hbno = 9
-    mcvno = 11
-    mchno = 12
-    pltno = 14
-    rdwno = 17
-    difno = 15
     neutno = 1
     lymno = 2
     eosno = 3
     monono = 4
     basno = 5
-    textareano = 22
+    print(ip)
+    if(ip==True):
+        difno= 9
+        hbno= 11
+        mcvno = 13
+        mchno = 14
+        pltno = 18
+        rdwno = 16
+        textareano = 24
+    else:
+        hbno = 9
+        mcvno = 11
+        mchno = 12
+        pltno = 14
+        rdwno = 17
+        difno = 15
+        textareano = 22
+
+
 
     for x in range(modifyno-1):
         print(modifyno)
@@ -114,14 +132,25 @@ def fill_values():
         textarea = driver.find_element(By.XPATH, f"/html/body/form/table[{textareano}]/tbody/tr/td[3]/div/textarea")
         print(textareano)
         textarea.send_keys(Totaltext)
-        wbcno += 20
-        hbno += 20
-        mcvno += 20
-        mchno += 20
-        pltno += 20
-        difno += 20
-        rdwno += 20
-        textareano += 20
+
+        if(ip==True):
+            wbcno += 22
+            hbno += 22
+            mcvno += 22
+            mchno += 22
+            pltno += 22
+            difno += 22
+            rdwno += 22
+            textareano += 22
+        else:
+            wbcno += 20
+            hbno += 20
+            mcvno += 20
+            mchno += 20
+            pltno += 20
+            difno += 20
+            rdwno += 20
+            textareano += 20
 
 
 def start_chrome():
@@ -135,7 +164,7 @@ def start_chrome():
     element = driver.find_element(By.ID, "UserName")
     e2 = driver.find_element(By.ID, "pwd")
 
-    b = driver.find_element(By.ID, "submitId")
+
     print(uname)
     element.send_keys(uname)
     e2.send_keys(pass1)
@@ -150,8 +179,10 @@ def show():
     print(type(modifyno))
     print(modifyno)
 
+
+
 button1 = tkinter.Button(text="Fill Values", command=fill_values)
-button1.pack()
+button1.grid(row=0, column= 0)
 options = [
     1,
     2,3,4,5,6,7,8,9,10
@@ -159,26 +190,36 @@ options = [
 clicked = tkinter.IntVar()
 clicked.set(1)
 drop = tkinter.OptionMenu(window,clicked,*options )
-drop.pack()
+drop.grid(row=1, column=0)
 button3= tkinter.Button(text="Confirm patients", command=show)
-button3.pack()
+button3.grid(row=1, column=1)
 button2 = tkinter.Button(text="Start Chrome", command=start_chrome)
-button2.pack()
+button2.grid(row=3, column=0)
 username = tkinter.ttk.Entry()
-username.pack()
+username.grid(row=5, column=1)
 password = tkinter.ttk.Entry()
-password.pack()
+password.grid(row=6,column=1)
 button4 = tkinter.Button(text="Update", command=update_credentials)
-button4.pack()
-
+button4.grid(row=7,column=1)
+checkbutton = tkinter.Checkbutton(window,text="IP",command=setip)
+checkbutton.grid(row=8,column=2)
 def valueextractor(num1,num2):
  val1 = ""
  if num2 == None:
-    val1 = driver.find_element(By.XPATH, f"/html/body/form/table[{num1}]/tbody/tr/td[3]/div/div[2]/table[3]/tbody/tr/td[2]/div/table/tbody/tr/td[1]/div/input").get_attribute("value")
+    try:
+        val1 = driver.find_element(By.XPATH, f"/html/body/form/table[{num1}]/tbody/tr/td[3]/div/div[2]/table[3]/tbody/tr/td[2]/div/table/tbody/tr/td[1]/div/input").get_attribute("value")
+    except:
+
+        val1 = driver.find_element(By.XPATH, f"/html/body/form/table[{num1-1}]/tbody/tr/td[3]/div/div[2]/table[3]/tbody/tr/td[2]/div/table/tbody/tr/td[1]/div/input").get_attribute("value")
 
  else:
-    val1 = driver.find_element(By.XPATH, f"/html/body/form/table[{num1}]/tbody/tr/td[3]/div/div[2]/table[3]/tbody/tr[{num2}]/td[2]/div/table/tbody/tr/td[1]/div/input").get_attribute("value")
+    try:
+        val1 = driver.find_element(By.XPATH, f"/html/body/form/table[{num1}]/tbody/tr/td[3]/div/div[2]/table[3]/tbody/tr[{num2}]/td[2]/div/table/tbody/tr/td[1]/div/input").get_attribute("value")
+    except:
 
+        val1 = driver.find_element(By.XPATH,
+                                   f"/html/body/form/table[{num1-1}]/tbody/tr/td[3]/div/div[2]/table[3]/tbody/tr[{num2}]/td[2]/div/table/tbody/tr/td[1]/div/input").get_attribute(
+            "value")
  try:
   rval = float(val1)
  except:
