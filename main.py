@@ -4,15 +4,21 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import tkinter
 from tkinter import ttk
-modifyno = 2
+
+global ip
 ip = False
+
+def checkbox():
+    check = driver.find_elements(By.TAG_NAME, "checkbox")
+    for x in check:
+        x.click()
 window = tkinter.Tk()
 window.title("Falcon's Validator")
 window.minsize(width=450,height=450)
 window.config(padx=50, pady=50)
 
 def setip():
-    ip=True
+    ip = True
     print(ip)
 def update_credentials():
     global uname
@@ -30,7 +36,7 @@ def fill_values():
     eosno = 3
     monono = 4
     basno = 5
-    print(ip)
+
     if(ip==True):
         difno= 9
         hbno= 11
@@ -50,7 +56,7 @@ def fill_values():
 
 
 
-    for x in range(modifyno-1):
+    for x in range(modifyno):
         print(modifyno)
         wbc = valueextractor(wbcno, None)
         hb = valueextractor(hbno, None)
@@ -97,15 +103,18 @@ def fill_values():
         if (wbc == "Rerun"):
             wbctext = "Rerun"
         elif (wbc > 12):
+            print(neut)
             if (neut>80):
                 wbctext = "Neutrophilic Leucocytosis"
-            wbctext = "Leucocytosis"
+            else:
+                wbctext = "Leucocytosis"
         elif (wbc < 3.5):
             wbctext = "Leucopenia"
         else:
             if(neut > 80):
                 wbctext = "Relative neutrophilia"
-            wbctext = "Within normal limits"
+            else:
+                wbctext = "Within normal limits"
 
 
         if (neut == "Rerun"):
@@ -127,7 +136,11 @@ def fill_values():
         else:
             rdwtext = " "
 
-        Totaltext = f"RBC\n{rdwtext}{mcvtext},{mchtext}\nWBC\n{wbctext}\nPlatelet\n{Plttext}"
+        if (hb < 5):
+            rbctext = "Check Sample"
+        else:
+            rbctext = rdwtext + "," + mcvtext + "," + mchtext
+        Totaltext = f"RBC\n{rbctext}\nWBC\n{wbctext}\nPlatelet\n{Plttext}"
         print(Totaltext)
         textarea = driver.find_element(By.XPATH, f"/html/body/form/table[{textareano}]/tbody/tr/td[3]/div/textarea")
         print(textareano)
@@ -171,6 +184,7 @@ def start_chrome():
 
 
 def show():
+    global modifyno
     modifyno = clicked.get()
     print(modifyno)
     if (modifyno==1):
@@ -203,6 +217,11 @@ button4 = tkinter.Button(text="Update", command=update_credentials)
 button4.grid(row=7,column=1)
 checkbutton = tkinter.Checkbutton(window,text="IP",command=setip)
 checkbutton.grid(row=8,column=2)
+allcheck = tkinter.Button(text="Check All", command=checkbox)
+allcheck.grid(row=9, column= 2)
+
+
+
 def valueextractor(num1,num2):
  val1 = ""
  if num2 == None:
@@ -235,7 +254,6 @@ def valueextractor(num1,num2):
 
 
 window.mainloop()
-
 
 
 
