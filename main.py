@@ -9,8 +9,11 @@ global ip
 ip = False
 
 def checkbox():
-    check = driver.find_elements(By.TAG_NAME, "checkbox")
+    #driver.switch_to.default_content()
+    check = driver.find_elements(By.NAME, "chkResultValidationPatient")
+
     for x in check:
+        print(x)
         x.click()
 window = tkinter.Tk()
 window.title("Falcon's Validator")
@@ -36,6 +39,7 @@ def fill_values():
     eosno = 3
     monono = 4
     basno = 5
+    sample = 4
 
     if(ip==True):
         difno= 9
@@ -68,6 +72,7 @@ def fill_values():
         eos = valueextractor(difno, eosno)
         mono = valueextractor(difno, monono)
         bas = valueextractor(difno, basno)
+        sampleno = driver.find_element(By.XPATH,f"/html/body/form/table[{sample}]/tbody/tr/td[6]/div/font").text
 
         print(wbc)
         print(type(wbc))
@@ -102,6 +107,8 @@ def fill_values():
         wbctext = ""
         if (wbc == "Rerun"):
             wbctext = "Rerun"
+        elif (wbc >25):
+            wbctext = "Check Sample"
         elif (wbc > 12):
             print(neut)
             if (neut>80):
@@ -119,6 +126,7 @@ def fill_values():
 
         if (neut == "Rerun"):
             neuttext = "Check Sample"
+            #T.insert(tkinter.END, f"{sample}")
 
         mchtext = ""
         if (mch == "Rerun"):
@@ -138,9 +146,13 @@ def fill_values():
 
         if (hb < 5):
             rbctext = "Check Sample"
+           # T.insert(tkinter.END,f"{sample}")
         else:
             rbctext = rdwtext + "," + mcvtext + "," + mchtext
-        Totaltext = f"RBC\n{rbctext}\nWBC\n{wbctext}\nPlatelet\n{Plttext}"
+        Totaltext = f"RBC-{rbctext}\nWBC-{wbctext}\nPlatelet-{Plttext}"
+        if(rbctext or wbctext or Plttext == "Check Sample"):
+            print(rbctext,wbctext,Plttext)
+            T.insert(tkinter.END, f"{sampleno}")
         print(Totaltext)
         textarea = driver.find_element(By.XPATH, f"/html/body/form/table[{textareano}]/tbody/tr/td[3]/div/textarea")
         print(textareano)
@@ -164,6 +176,7 @@ def fill_values():
             difno += 20
             rdwno += 20
             textareano += 20
+            sample += 20
 
 
 def start_chrome():
@@ -193,7 +206,8 @@ def show():
     print(type(modifyno))
     print(modifyno)
 
-
+def clear1():
+    T.delete('1.0', tkinter.END)
 
 button1 = tkinter.Button(text="Fill Values", command=fill_values)
 button1.grid(row=0, column= 0)
@@ -219,6 +233,13 @@ checkbutton = tkinter.Checkbutton(window,text="IP",command=setip)
 checkbutton.grid(row=8,column=2)
 allcheck = tkinter.Button(text="Check All", command=checkbox)
 allcheck.grid(row=9, column= 2)
+T= tkinter.Text(window,height=10, width=100)
+T.grid(row=9, column=0)
+clear = tkinter.Button(text = "Clear", command=clear1)
+clear.grid(row = 9, column = 3)
+
+
+
 
 
 
@@ -254,7 +275,6 @@ def valueextractor(num1,num2):
 
 
 window.mainloop()
-
 
 
 
