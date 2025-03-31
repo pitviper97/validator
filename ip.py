@@ -39,6 +39,7 @@ def fill_values():
     eosno = 3
     monono = 4
     basno = 5
+    sample = 4
 
     if(ip==True):
         difno= 10
@@ -71,6 +72,7 @@ def fill_values():
         eos = valueextractor(difno, eosno)
         mono = valueextractor(difno, monono)
         bas = valueextractor(difno, basno)
+        sampleno = driver.find_element(By.XPATH, f"/html/body/form/table[{sample}]/tbody/tr/td[6]/div/font").text
 
         print(wbc)
         print(type(wbc))
@@ -105,6 +107,8 @@ def fill_values():
         wbctext = ""
         if (wbc == "Rerun"):
             wbctext = "Rerun"
+        elif (wbc>25):
+            wbctext = "Check Sample"
         elif (wbc > 12):
             if (neut>80):
                 wbctext = "Neutrophilic Leucocytosis"
@@ -145,6 +149,9 @@ def fill_values():
             else:
                 rbctext = rdwtext + "," + mcvtext+","+mchtext
         Totaltext = f"RBC\n{rbctext}\nWBC\n{wbctext}\nPlatelet\n{Plttext}"
+        if (rbctext or wbctext or Plttext == "Check Sample"):
+            print(rbctext, wbctext, Plttext)
+            T.insert(tkinter.END, f"{sampleno}")
         print(Totaltext)
         textarea = driver.find_element(By.XPATH, f"/html/body/form/table[{textareano}]/tbody/tr/td[3]/div/textarea")
         print(textareano)
@@ -197,6 +204,8 @@ def show():
     print(type(modifyno))
     print(modifyno)
 
+def clear1():
+    T.delete('1.0', tkinter.END)
 
 
 button1 = tkinter.Button(text="Fill Values", command=fill_values)
@@ -223,6 +232,11 @@ checkbutton = tkinter.Checkbutton(window,text="IP",command=setip)
 checkbutton.grid(row=8,column=2)
 allcheck = tkinter.Button(text="Check All", command=checkbox)
 allcheck.grid(row=9, column= 2)
+T= tkinter.Text(window,height=10, width=100)
+T.grid(row=9, column=0)
+clear = tkinter.Button(text = "Clear", command=clear1)
+clear.grid(row = 9, column = 3)
+
 
 def valueextractor(num1,num2):
  val1 = ""
@@ -256,7 +270,6 @@ def valueextractor(num1,num2):
 
 
 window.mainloop()
-
 
 
 
