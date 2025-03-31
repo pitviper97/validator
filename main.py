@@ -5,12 +5,12 @@ from selenium.webdriver.common.keys import Keys
 import tkinter
 from tkinter import ttk, IntVar
 
-from IP import checkbutton
+
 
 global ip
 ip = False
 
-
+#sysmax xp300 requires new table values
 
 
 def checkbox():
@@ -27,8 +27,11 @@ window.config(padx=50, pady=50)
 
 def setip():
     global ip
+
     if (checkbuttonvar.get() == 1):
         ip = True
+    else:
+        ip = False
     print(ip)
 def update_credentials():
     global uname
@@ -50,6 +53,15 @@ def fill_values():
     monono = 4
     basno = 5
     sample = 4
+
+    # if(xmax):
+    #     difno=8
+    #     hbno=10
+    #     mcvno=12
+    #     mchno=13
+    #     rdwno=15
+    #     pltno=17
+
 
     if(ip==True):
         difno = 10
