@@ -3,10 +3,15 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import tkinter
-from tkinter import ttk
+from tkinter import ttk, IntVar
+
+from IP import checkbutton
 
 global ip
 ip = False
+
+
+
 
 def checkbox():
     #driver.switch_to.default_content()
@@ -21,7 +26,9 @@ window.minsize(width=450,height=450)
 window.config(padx=50, pady=50)
 
 def setip():
-    ip = True
+    global ip
+    if (checkbuttonvar.get() == 1):
+        ip = True
     print(ip)
 def update_credentials():
     global uname
@@ -29,6 +36,9 @@ def update_credentials():
     uname = username.get()
     pass1 = password.get()
     print(uname,pass1)
+
+
+
 def fill_values():
     driver.switch_to.default_content()
     iframe = driver.find_element(By.XPATH, "/html/body/form/div[2]/div[5]/div[2]/div[2]/div/iframe")
@@ -42,13 +52,13 @@ def fill_values():
     sample = 4
 
     if(ip==True):
-        difno= 9
-        hbno= 11
-        mcvno = 13
-        mchno = 14
-        pltno = 18
-        rdwno = 16
-        textareano = 24
+        difno = 10
+        hbno = 12
+        mcvno = 14
+        mchno = 15
+        pltno = 19
+        rdwno = 17
+        textareano = 26
     else:
         hbno = 9
         mcvno = 11
@@ -88,7 +98,7 @@ def fill_values():
             else:
                 Plttext = "Thrombocytopenia"
 
-        elif (plt > 430):
+        elif (plt > 440):
             if (plt > 600):
                 Plttext = "Check Sample"
             else:
@@ -159,14 +169,14 @@ def fill_values():
         textarea.send_keys(Totaltext)
 
         if(ip==True):
-            wbcno += 22
-            hbno += 22
-            mcvno += 22
-            mchno += 22
-            pltno += 22
-            difno += 22
-            rdwno += 22
-            textareano += 22
+            wbcno += 24
+            hbno += 24
+            mcvno += 24
+            mchno += 24
+            pltno += 24
+            difno += 24
+            rdwno += 24
+            textareano += 24
         else:
             wbcno += 20
             hbno += 20
@@ -196,6 +206,7 @@ def start_chrome():
     e2.send_keys(pass1)
 
 
+#setting how many samples to fill
 def show():
     global modifyno
     modifyno = clicked.get()
@@ -206,14 +217,17 @@ def show():
     print(type(modifyno))
     print(modifyno)
 
+#textbox clear
 def clear1():
     T.delete('1.0', tkinter.END)
 
+
+#user interface
 button1 = tkinter.Button(text="Fill Values", command=fill_values)
 button1.grid(row=0, column= 0)
 options = [
     1,
-    2,3,4,5,6,7,8,9,10
+    2,3,4,5,6,7,8,9,10,15,20
 ]
 clicked = tkinter.IntVar()
 clicked.set(1)
@@ -229,7 +243,8 @@ password = tkinter.ttk.Entry()
 password.grid(row=6,column=1)
 button4 = tkinter.Button(text="Update", command=update_credentials)
 button4.grid(row=7,column=1)
-checkbutton = tkinter.Checkbutton(window,text="IP",command=setip)
+checkbuttonvar = IntVar()
+checkbutton = tkinter.Checkbutton(window,text="IP",variable=checkbuttonvar,offvalue=0, onvalue=1,command=setip)
 checkbutton.grid(row=8,column=2)
 allcheck = tkinter.Button(text="Check All", command=checkbox)
 allcheck.grid(row=9, column= 2)
@@ -237,6 +252,7 @@ T= tkinter.Text(window,height=10, width=100)
 T.grid(row=9, column=0)
 clear = tkinter.Button(text = "Clear", command=clear1)
 clear.grid(row = 9, column = 3)
+
 
 
 
