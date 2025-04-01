@@ -10,7 +10,7 @@ from tkinter import ttk, IntVar
 global ip
 ip = False
 
-#sysmax xp300 requires new table values
+
 
 
 def checkbox():
@@ -18,7 +18,7 @@ def checkbox():
     check = driver.find_elements(By.NAME, "chkResultValidationPatient")
 
     for x in check:
-        print(x)
+
         x.click()
 window = tkinter.Tk()
 window.title("Falcon's Validator")
@@ -32,13 +32,13 @@ def setip():
         ip = True
     else:
         ip = False
-    print(ip)
+
 def update_credentials():
     global uname
     global pass1
     uname = username.get()
     pass1 = password.get()
-    print(uname,pass1)
+
 
 
 
@@ -53,15 +53,6 @@ def fill_values():
     monono = 4
     basno = 5
     sample = 4
-
-    # if(xmax):
-    #     difno=8
-    #     hbno=10
-    #     mcvno=12
-    #     mchno=13
-    #     rdwno=15
-    #     pltno=17
-
 
     if(ip==True):
         difno = 10
@@ -172,12 +163,12 @@ def fill_values():
         else:
             rbctext = rdwtext + "," + mcvtext + "," + mchtext
         Totaltext = f"RBC-{rbctext}\nWBC-{wbctext}\nPlatelet-{Plttext}"
-        if(rbctext or wbctext or Plttext == "Check Sample"):
+        if(rbctext == "Check Sample" or wbctext == "Check Sample" or Plttext == "Check Sample"):
             print(rbctext,wbctext,Plttext)
-            T.insert(tkinter.END, f"{sampleno}")
-        print(Totaltext)
+            T.insert(tkinter.END, f"{sampleno}\n")
+
         textarea = driver.find_element(By.XPATH, f"/html/body/form/table[{textareano}]/tbody/tr/td[3]/div/textarea")
-        print(textareano)
+
         textarea.send_keys(Totaltext)
 
         if(ip==True):
@@ -189,6 +180,7 @@ def fill_values():
             difno += 24
             rdwno += 24
             textareano += 24
+            sample += 24
         else:
             wbcno += 20
             hbno += 20
@@ -303,7 +295,6 @@ def valueextractor(num1,num2):
 
 
 window.mainloop()
-
 
 
 
