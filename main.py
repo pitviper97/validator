@@ -8,6 +8,8 @@ from tkinter import ttk, IntVar
 
 
 global ip
+global xn1000
+xn1000 = False
 ip = False
 
 
@@ -33,12 +35,23 @@ def setip():
     else:
         ip = False
 
+
+def XN1000():
+    global xn1000
+    if (checkbuttonvar1.get() ==1):
+        xn1000 = True
+    else:
+        xn1000 = False
+
 def update_credentials():
     global uname
     global pass1
     uname = username.get()
     pass1 = password.get()
 
+def updateir():
+    global ir
+    ir = irinput.get()
 
 
 
@@ -102,7 +115,7 @@ def fill_values():
                 Plttext = "Thrombocytopenia"
 
         elif (plt > 440):
-            if (plt > 600):
+            if (plt > 800):
                 Plttext = "Check Sample"
             else:
                 Plttext = "Thrombocytosis"
@@ -163,6 +176,9 @@ def fill_values():
         else:
             rbctext = rdwtext + "," + mcvtext + "," + mchtext
         Totaltext = f"RBC-{rbctext}\nWBC-{wbctext}\nPlatelet-{Plttext}"
+        if(Plttext == "Thrombocytopenia" and wbctext == "Leucopenia"):
+            print(rbctext, wbctext, Plttext)
+            T.insert(tkinter.END, f"{sampleno}\n")
         if(rbctext == "Check Sample" or wbctext == "Check Sample" or Plttext == "Check Sample"):
             print(rbctext,wbctext,Plttext)
             T.insert(tkinter.END, f"{sampleno}\n")
@@ -170,27 +186,25 @@ def fill_values():
         textarea = driver.find_element(By.XPATH, f"/html/body/form/table[{textareano}]/tbody/tr/td[3]/div/textarea")
 
         textarea.send_keys(Totaltext)
+        ir = 20
+        if(xn1000==True):
+            ir = 16
 
         if(ip==True):
-            wbcno += 24
-            hbno += 24
-            mcvno += 24
-            mchno += 24
-            pltno += 24
-            difno += 24
-            rdwno += 24
-            textareano += 24
-            sample += 24
-        else:
-            wbcno += 20
-            hbno += 20
-            mcvno += 20
-            mchno += 20
-            pltno += 20
-            difno += 20
-            rdwno += 20
-            textareano += 20
-            sample += 20
+            ir = 24
+
+
+
+
+        wbcno += ir
+        hbno += ir
+        mcvno += ir
+        mchno += ir
+        pltno += ir
+        difno += ir
+        rdwno += ir
+        textareano += ir
+        sample += ir
 
 
 def start_chrome():
@@ -250,12 +264,19 @@ button4.grid(row=7,column=1)
 checkbuttonvar = IntVar()
 checkbutton = tkinter.Checkbutton(window,text="IP",variable=checkbuttonvar,offvalue=0, onvalue=1,command=setip)
 checkbutton.grid(row=8,column=2)
+checkbuttonvar1 = IntVar()
+checkbutton1 = tkinter.Checkbutton(window,text="XN1000",variable=checkbuttonvar1,offvalue=0, onvalue=1,command=XN1000)
+checkbutton1.grid(row=8,column=3)
+
 allcheck = tkinter.Button(text="Check All", command=checkbox)
 allcheck.grid(row=9, column= 2)
 T= tkinter.Text(window,height=10, width=100)
 T.grid(row=9, column=0)
 clear = tkinter.Button(text = "Clear", command=clear1)
 clear.grid(row = 9, column = 3)
+
+irinput = tkinter.ttk.Entry()
+irinput.grid(row=10, column=1)
 
 
 
