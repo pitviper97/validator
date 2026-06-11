@@ -11,6 +11,7 @@ global ip
 global xn1000
 xn1000 = False
 ip = False
+mindray = False
 
 import re
 
@@ -57,8 +58,8 @@ def get_age_in_days(parsed_data: dict) -> float:
         return value
     elif unit in ['wk', 'wks', 'week', 'weeks']:
         return value * 7
-    elif unit in ['m', 'mo', 'month', 'months']:
-        return value * 30.44  # Average days in a month
+    elif unit in ['m', 'mo', 'month', 'months','mth']:
+        return value * 30 # Average days in a month
     elif unit in ['y', 'yr', 'yrs', 'year', 'years']:
         return value * 365  # Account for leap years
     else:
@@ -125,6 +126,16 @@ def XN1000():
     else:
         xn1000 = False
     print(f"xn1000{xn1000}")
+
+
+
+def MRAY():
+    global mindray
+    if (checkbuttonvar2.get() ==1):
+        mindray = True
+    else:
+        mindray = False
+    print(f"mindray{mindray}")
 
 def update_credentials():
     global uname
@@ -229,11 +240,16 @@ def fill_values():
         mchtext = ""
         lymtext = ""
 
-        wbc = valueextractor(wbcno, None)
+
         hb = valueextractor(hbno, None)
         mcv = valueextractor(mcvno, None)
         mch = valueextractor(mchno, None)
-        plt = valueextractor(pltno, None)
+        if mindray:
+            plt = 100*(valueextractor(pltno, None))
+            wbc = (valueextractor(wbcno, None)) / 1000
+        else:
+            plt = valueextractor(pltno, None)
+            wbc = (valueextractor(wbcno, None))
         #rdw = valueextractor(rdwno, None)
         neut = valueextractor(difno, neutno)
         eos = valueextractor(difno, eosno)
@@ -273,9 +289,11 @@ def fill_values():
             "WBC": wbc,
             "Platelets": plt ,
             "MCH" : mch,
-
+            "M": wbc*(mono/100),
             "N": wbc*(neut/100),
-            "L": wbc*(lym/100)
+            "L": wbc*(lym/100),
+            "E": wbc*(eos/100),
+
         }
 
         full_report = anal.evaluate_panel(age_group=bucket, patient_results=patient_data)
@@ -334,13 +352,21 @@ def fill_values():
                         mchtext = "Normochromic"
                     else:
                         mchtext = " "
+                case "E":
+                    if item['status'] == "High":
+                        Wbctext = "Check Sample - E"
+
+                case "M":
+                    if item['status'] == "High":
+                        Wbctext = "Check Sample - M"
+
 
         if (Plttext == "Thrombocytopenia" and Wbctext == "Leucopenia"):
             print(Rbctext, Wbctext, Plttext)
             T.insert(tkinter.END, f"{sampleno}\n")
-        if Rbctext == "Check Sample" or Wbctext == "Check Sample" or Plttext == "Check Sample" or lymtext == "Lymphocytosis":
+        if Rbctext == "Check Sample" or  "Check Sample" in Wbctext or Plttext == "Check Sample" or lymtext == "Lymphocytosis":
             print(Rbctext, Wbctext, Plttext)
-            T.insert(tkinter.END, f"{sampleno}\n")
+            T.insert(tkinter.END, f"{sampleno}{Wbctext}{wbc*(mono/100)}\n")
         else:
             Rbctext = mcvtext+mchtext
 
@@ -422,6 +448,10 @@ checkbuttonvar1 = IntVar()
 checkbutton1 = tkinter.Checkbutton(window,text="XN1000",variable=checkbuttonvar1,offvalue=0, onvalue=1,command=XN1000)
 checkbutton1.grid(row=8,column=3)
 
+checkbuttonvar2 = IntVar()
+checkbutton2 = tkinter.Checkbutton(window,text="MR",variable=checkbuttonvar2,offvalue=0, onvalue=1,command=MRAY)
+checkbutton2.grid(row=8,column=4)
+
 allcheck = tkinter.Button(text="Check All", command=checkbox)
 allcheck.grid(row=9, column= 2)
 T= tkinter.Text(window,height=10, width=100)
@@ -470,6 +500,5 @@ def valueextractor(num1,num2):
 
 
 window.mainloop()
-
 
 
