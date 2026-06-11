@@ -38,7 +38,7 @@ class BloodPanelAnalyzer:
                 "WBC": (6.0, 22.0),
                 "N": (3.0, 6.0),
                 "L": (3.0, 9.0),
-                "M": (0.1, 1.7),
+                "M": (0.1, 2.0),
                 "E": (0.1, 0.8),
                 "Platelets": (160.0, 500.0)
             },
@@ -51,7 +51,7 @@ class BloodPanelAnalyzer:
                 "WBC": (6.0, 22.0),
                 "N": (3.0, 7.0),
                 "L": (3.0, 9.0),
-                "M": (0.1, 1.7),
+                "M": (0.1, 2.0),
                 "E": (0.1, 0.9),
                 "Platelets": (170.0, 500.0)
             },
@@ -64,7 +64,7 @@ class BloodPanelAnalyzer:
                 "WBC": (5.0, 19.0),
                 "N": (3.0, 9.0),
                 "L": (3.0, 16.0),
-                "M": (0.3, 1.0),
+                "M": (0.3, 2.0),
                 "E": (0.2, 1.0),
                 "Platelets": (200.0, 500.0)
             },
@@ -77,7 +77,7 @@ class BloodPanelAnalyzer:
                 "WBC": (5.0, 15.0),
                 "N": (1.0, 5.0),
                 "L": (4.0, 10.0),
-                "M": (0.4, 1.2),
+                "M": (0.4, 2.2),
                 "E": (0.1, 1.0),
                 "Platelets": (210.0, 650.0)
             },
@@ -90,7 +90,7 @@ class BloodPanelAnalyzer:
                 "WBC": (6.0, 18.0),
                 "N": (1.0, 6.0),
                 "L": (4.0, 12.0),
-                "M": (0.2, 1.2),
+                "M": (0.2, 2.2),
                 "E": (0.1, 1.0),
                 "Platelets": (200.0, 550.0)
             },
@@ -103,7 +103,7 @@ class BloodPanelAnalyzer:
                 "WBC": (6.0, 16.0),
                 "N": (2.0, 7.0),
                 "L": (3.5, 11.0),
-                "M": (0.2, 1.0),
+                "M": (0.2, 2.2),
                 "E": (0.1, 1.0),
                 "Platelets": (200.0, 550.0)
             },
@@ -116,7 +116,7 @@ class BloodPanelAnalyzer:
                 "WBC": (5.0, 15.0),
                 "N": (1.5, 8.0),
                 "L": (6.0, 9.0),
-                "M": (0.2, 1.0),
+                "M": (0.2, 2.2),
                 "E": (0.1, 1.0),
                 "Platelets": (200.0, 490.0)
             },
@@ -139,10 +139,10 @@ class BloodPanelAnalyzer:
                 "MCH": (25.0, 33.0),
                 "MCHC": (31.0, 37.0),
                 "Reticulocytes": (3.0, 10.0),
-                "WBC": (4.0, 10.0),
+                "WBC": (4.0, 11.0),
                 "N": (1.5, 8.0),
-                "L": (1.0, 5.0),
-                "M": (0.2, 0.8),
+                "L": (1.0, 4.0),
+                "M": (0.1, 1.5),
                 "E": (0.1, 0.5),
                 "Platelets": (150.0, 450.0)
             }
@@ -200,4 +200,3 @@ class BloodPanelAnalyzer:
 #print("Single Check Result:")
 #print(
    # f"  {single_check['index']}: {single_check['value']} -> {single_check['status']} (Range: {single_check['reference_range']})\n")
-
